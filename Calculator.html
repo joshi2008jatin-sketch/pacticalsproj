@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+
+    <style>
+        .box {
+            background-color: brown;
+            border: 8px solid black;
+            height: 950px;
+            width: 500px;
+            margin: 50px auto;
+            border-radius: 20px;
+        }
+
+        .box1 {
+            background-color: black;
+            color: white;
+            height: 100px;
+            width: 400px;
+            margin: 30px auto;
+            font-size: 40px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 10px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .box2 {
+            background-color: burlywood;
+            height: 80px;
+            width: 80px;
+            border: 4px solid black;
+            border-radius: 50%;
+            margin: 30px;
+            justify-content: center;
+            font-size: 50px;
+            align-items: center;
+            display: flex;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .box2:hover {
+            background-color: wheat;
+        }
+
+        .box3 {
+            display: flex;
+        }
+
+        .box4 {
+            font-size: 25px;
+            font-weight: bold;
+            height: 50px;
+            width: 120px;
+            margin: 20px 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: 3px solid black;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+
+        <div class="box1" id="display"></div>
+
+        <div class="box3">
+            <div class="box2" onclick="appendValue('1')">1</div>
+            <div class="box2" onclick="appendValue('2')">2</div>
+            <div class="box2" onclick="appendValue('3')">3</div>
+            <div class="box2" onclick="appendValue('+')">+</div>
+        </div>
+
+        <div class="box3">
+            <div class="box2" onclick="appendValue('4')">4</div>
+            <div class="box2" onclick="appendValue('5')">5</div>
+            <div class="box2" onclick="appendValue('6')">6</div>
+            <div class="box2" onclick="appendValue('-')">-</div>
+        </div>
+
+        <div class="box3">
+            <div class="box2" onclick="appendValue('7')">7</div>
+            <div class="box2" onclick="appendValue('8')">8</div>
+            <div class="box2" onclick="appendValue('9')">9</div>
+            <div class="box2" onclick="appendValue('*')">*</div>
+        </div>
+
+        <div class="box3">
+            <div class="box2" onclick="appendValue('0')">0</div>
+            <div class="box2" onclick="appendValue('/')">/</div>
+            <div class="box2" onclick="appendValue('%')">%</div>
+            <div class="box2" onclick="calculate()">=</div>
+        </div>
+
+        <div class="box3">
+            <div class="box4" style="background-color: red;"
+                onclick="stopCalculator()">STOP</div>
+
+            <div class="box4" style="background-color: green;"
+                onclick="startCalculator()">START</div>
+        </div>
+
+        <div class="box3">
+            <div class="box4" style="background-color: orange;"
+                onclick="clearDisplay()">CLEAR</div>
+
+            <div class="box4" style="background-color: lightblue;"
+                onclick="deleteLast()">DELETE</div>
+        </div>
+
+    </div>
+
+    <script>
+
+        let display = document.getElementById("display");
+        let isRunning = true;
+
+        // Add numbers and operators
+        function appendValue(value) {
+
+            if (!isRunning) {
+                return;
+            }
+
+            display.innerHTML += value;
+        }
+
+        // Calculate result
+        function calculate() {
+
+            if (!isRunning || display.innerHTML === "") {
+                return;
+            }
+
+            try {
+
+                let expression = display.innerHTML;
+
+                if (!/^[0-9+\-*/%.() ]+$/.test(expression)) {
+                    display.innerHTML = "Invalid";
+                    return;
+                }
+
+                let result = eval(expression);
+
+                if (!Number.isFinite(result)) {
+                    display.innerHTML = "Error";
+                }
+                else {
+                    display.innerHTML = result;
+                }
+
+            }
+            catch {
+                display.innerHTML = "Error";
+            }
+        }
+
+        // Stop calculator
+        function stopCalculator() {
+
+            isRunning = false;
+            display.innerHTML = "STOPPED";
+
+        }
+
+        // Start calculator
+        function startCalculator() {
+
+            isRunning = true;
+            display.innerHTML = "";
+
+        }
+
+        // Clear entire display
+        function clearDisplay() {
+
+            if (!isRunning) {
+                return;
+            }
+
+            display.innerHTML = "";
+
+        }
+
+        // Delete last character
+        function deleteLast() {
+
+            if (!isRunning) {
+                return;
+            }
+
+            display.innerHTML = display.innerHTML.slice(0, -1);
+
+        }
+
+    </script>
+
+</body>
+</html>
